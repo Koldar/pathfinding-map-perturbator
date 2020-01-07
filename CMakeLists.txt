@@ -3,25 +3,25 @@
 # **********************************************************************************************
 
 #the name of the project
-set(THEPROJECT_NAME "PROJECT_NAME")
+set(THEPROJECT_NAME "pathfinding-map-perturbator")
 
 #the version of the project
 set(THEPROJECT_VERSION 1.0)
 
 #what will be prodiced: either EXE (executable); SO (shared library) AO (static library)
 #Can be overriden by using "cmake -DU_LIBRARY_TYPE:STRING=<newvalue>" command
-set(THEPROJECT_OUTPUT "SO")
+set(THEPROJECT_OUTPUT "EXE")
 
 #a spaced separated list of shared libraries names that will be used when linking the main project. 
 #Each library needs to be installed on the system. Each library should be declared as a quoted string
-set(THEPROJECT_REQUIRED_SHARED_LIBRARIES "m")
+set(THEPROJECT_REQUIRED_SHARED_LIBRARIES "cpp-utils" "pathfinding-utils" "pathfinding-map-perturbator-utils" "boost_filesystem" "dl")
 
 #Represents the library official name of an entry in THEPROJECT_REQUIRED_SHARED_LIBRARIES.
 #This has been done because sometimes a library soname is not the library common nam e (e.g., "m" is "math")
 #The variable is a spaced separated list of names. The i-th element in THEPROJECT_REQUIRED_SHARED_LIBRARIES_NAMES
 #The cell is empty ig the library soname is the same of the library official name.
 #is the name of the i-th library in THEPROJECT_REQUIRED_SHARED_LIBRARIES
-set(THEPROJECT_REQUIRED_SHARED_LIBRARIES_NAMES "math")
+set(THEPROJECT_REQUIRED_SHARED_LIBRARIES_NAMES "cpp-utils" "pathfinding-utils" "pathfinding-map-perturbator-utils" "boost_filesystem" "dl")
 
 #Represents the package name we need to install with "apt-get" software of an entry in THEPROJECT_REQUIRED_SHARED_LIBRARIES.
 #This has been done because in this way this script can automatically install dependency if needed (this feature has not been done yet though)
