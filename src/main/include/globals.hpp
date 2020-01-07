@@ -30,6 +30,11 @@ public:
      */
     std::string outputMainDirectory;
     /**
+     * @brief directory where we will put files which are not the main output ones
+     * 
+     */
+    std::string outputTempDirectory;
+    /**
      * @brief number of pathfinding queries to perform per perturbated map generated
      * 
      */
@@ -61,6 +66,11 @@ public:
      * 
      */
     std::string infinityProbabilityPyString;
+    /**
+     * @brief name of the file repersenting the landmark database
+     * 
+     */
+    std::string landmarkPathPyString;
     /**
      * @brief true if you want to generate an image representing the perturbated map image
      * 
