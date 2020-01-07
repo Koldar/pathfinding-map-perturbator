@@ -1,0 +1,12 @@
+#Eclipse
+Debug/
+Release/
+.cproject
+.project
+.settings/
+
+# Visual Studio Code
+.vscode/
+
+# Cmake
+build/
