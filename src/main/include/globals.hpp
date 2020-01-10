@@ -40,10 +40,10 @@ public:
      */
     int queryPerPerturbatedMap;
     /**
-     * @brief number of perturbated maps we need to create
+     * @brief python eval string representing number of perturbated maps we need to create
      * 
      */
-    int numberOfPerturbatedMaps;
+    std::string numberOfPerturbatedMapsPyString;
     /**
      * @brief python eval string representing the number of perturbations to perform per map
      * 
@@ -71,6 +71,21 @@ public:
      * 
      */
     std::string landmarkPathPyString;
+    /**
+     * @brief python eval string representing the name to generate for the CSV containing infor regarding the perturbated map
+     * 
+     */
+    std::string otuputMainCsvFilenamePyString;
+    /**
+     * @brief python eval string representing the name of the JSon representing the perturbated map
+     * 
+     */
+    std::string outputMainJsonMapFilenamePyString;
+    /**
+     * @brief python eval string representing the name of the JSon representing the original map
+     * 
+     */
+    std::string outputMainJsonOriginalMapFilenamePyString;
     /**
      * @brief true if you want to generate an image representing the perturbated map image
      * 
