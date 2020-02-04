@@ -23,24 +23,6 @@ set(THEPROJECT_REQUIRED_SHARED_LIBRARIES "cpp-utils" "pathfinding-utils" "pathfi
 #is the name of the i-th library in THEPROJECT_REQUIRED_SHARED_LIBRARIES
 set(THEPROJECT_REQUIRED_SHARED_LIBRARIES_NAMES "cpp-utils" "pathfinding-utils" "pathfinding-map-perturbator-utils" "boost_filesystem" "dl")
 
-#Represents the package name we need to install with "apt-get" software of an entry in THEPROJECT_REQUIRED_SHARED_LIBRARIES.
-#This has been done because in this way this script can automatically install dependency if needed (this feature has not been done yet though)
-#For example if the library is "metis" here we should have "metis" because "sudo apt-get install metis" will install metis
-#The variable is a spaced separated list of names. The i-th element in THEPROJECT_REQUIRED_SHARED_LIBRARIES_NAMES.
-#An empty string if the library cannot be installed via apt-get.
-#is the name of the i-th library in THEPROJECT_REQUIRED_SHARED_LIBRARIES
-set(THEPROJECT_REQUIRED_SHARED_LIBRARIES_APTGET "")
-
-#a spaced separated list of additional shared libraries that will be used when linking the test application. Each library needs to be installed
-#ignore it if you put "THEPROJECT_TEST_ENABLE_TEST_COMPILATION" to "false" 
-set(THEPROJECT_TEST_ADDITIONAL_SHARED_LIBRARIES "")
-
-#Represents the library official name of an entry in THEPROJECT_TEST_ADDITIONAL_SHARED_LIBRARIES.
-#This has been done because sometimes a library soname is not the library common nam e (e.g., "m" is "math")
-#The variable is a spaced separated list of names. The i-th element in THEPROJECT_TEST_ADDITIONAL_SHARED_LIBRARIES_NAMES
-#is the name of the i-th library in THEPROJECT_TEST_ADDITIONAL_SHARED_LIBRARIES
-set(THEPROJECT_TEST_ADDITIONAL_SHARED_LIBRARIES_NAMES "")
-
 #Represents the package name we need to install with "apt-get" software of an entry in THEPROJECT_TEST_ADDITIONAL_SHARED_LIBRARIES.
 #This has been done because in this way this script can automatically install dependency if needed (this feature has not been done yet though)
 #For example if the library is "metis" here we should have "metis" because "sudo apt-get install metis" will install metis
@@ -73,6 +55,41 @@ set(THEPROJECT_POSITION_INDEPENDENT_CODE "true")
 # 8 CRITICAL
 set(THEPROJECT_DEBUG_LOG_LEVEL "3")
 
+# The -std version flag you want to use for compiling this project. Default to c++11
+# See man gcc for further information (go to -std man page)
+set(THEPROJECT_CPP_STANDARD "c++17")
+
+# Set of -D definitions to add to the build of both main/test debug/release
+# Use -D to add a new definition, -U to remove a definition. Defaults to nothing
+# Do not put here the following: NDEBUG, DEBUG, QUICKLOG
+# Example "-DCUSTOM=3 -DAVOID_PARALLEL -UENABLE_FAST
+set(THEPROJECT_ADDITIONAL_DEFINITIONS "")
+
+# Set of defniitions that applies ONLY to the main debug definitions
+# If overlapping with THEPROJECT_ADDITIONAL_DEFINITIONS, this takes precedents.
+# Do not put here the following: NDEBUG, DEBUG, QUICKLOG
+set(THEPROJECT_MAIN_DEBUG_DEFINITIONS "")
+
+# Set of defniitions that applies ONLY to the main release definitions
+# If overlapping with THEPROJECT_ADDITIONAL_DEFINITIONS, this takes precedents.
+# Do not put here the following: NDEBUG, DEBUG, QUICKLOG
+set(THEPROJECT_MAIN_RELEASE_DEFINITIONS "")
+
+# Set of compiler flags to use to improve the COMPILE PHASE in the build. These flags will be applied to main/test debug/release flags
+# Do not put here the following: -OX, -I, -L, -l, -std, -fmax-errors, -WX -o, -c
+# Example -fopenmp
+set(THEPROJECT_ADDITIONAL_COMPILE_FLAGS "")
+
+# Set of compiler flags to use to improve the COMPILE PHASE in the build of the main library using Debug. These flags will be applied to main/test debug/release flags
+# Do not put here the following: -OX, -I, -L, -l, -std, -fmax-errors, -WX -o, -c
+# Example -fopenmp
+set(THEPROJECT_ADDITIONAL_COMPILE_MAIN_DEBUG_FLAGS "")
+
+# Set of compiler flags to use to improve the COMPILE PHASE in the build of the main library using Release. These flags will be applied to main/test debug/release flags
+# Do not put here the following: -OX, -I, -L, -l, -std, -fmax-errors, -WX -o, -c
+# Example -fopenmp
+set(THEPROJECT_ADDITIONAL_COMPILE_MAIN_RELEASE_FLAGS "")
+
 #put true if you have changed something inside this cmake standard building process; false otherwise
 set(STANDARD_CMAKE_FILE_ALTERED "false")
 
@@ -90,8 +107,11 @@ set(CMAKE_FILE_ALTERED_COMMAND "")
 # - 1.5: ease to tweak log in cmake
 # - 1.6: fmax-errors=1 isntead of -Wfatal-errors
 # - 1.7: add done message at the end of successful compilation
-# - 1.8: added Catch framework in test, log default to 3, improve documentation, add library names and apt-get
-set(CMAKE_FILE_BUILDING_PROCESS_VERSION "1.8")
+# - 1.8: added Catch framework in test, log default to 3, improve documentation, add library names and apt-get, include cpp/include recusrive search
+# - 1.9: allow developer to change -std flag, add definition and compile flags without touching cmake files
+# - 1.10: -std flag default from c++11 to c++14
+# - 1.11: -std flag default from c++14 to c++17
+set(CMAKE_FILE_BUILDING_PROCESS_VERSION "1.11")
 
 #The place where all the stuff created by "sudo make install" will be positioned"
 #Leave it if you don't want to change the behaviour. Can be overriden by U_INSTALL_DIRECTORY. For example: "-DU_INSTALL_DIRECTORY=~/usr"
@@ -248,6 +268,12 @@ elseif(${THEPROJECT_OUTPUT} STREQUAL "EXE")
     message(STATUS "${BoldCyan}We will build an executable${ColorReset}")
 endif()
 message(STATUS "${BoldCyan}log level for debug build set to ${THEPROJECT_DEBUG_LOG_LEVEL}${ColorReset}")
+message(STATUS "${BoldCyan}Generic build definitions: ${THEPROJECT_ADDITIONAL_DEFINITIONS}${ColorReset}")
+message(STATUS "${BoldCyan}Debug build definitions: ${THEPROJECT_MAIN_DEBUG_DEFINITIONS}${ColorReset}")
+message(STATUS "${BoldCyan}Release build definitions: ${THEPROJECT_MAIN_RELEASE_DEFINITIONS}${ColorReset}")
+message(STATUS "${BoldCyan}Generic compile phase flags: ${THEPROJECT_ADDITIONAL_COMPILE_FLAGS}${ColorReset}")
+message(STATUS "${BoldCyan}Debug compile phase flags: ${THEPROJECT_ADDITIONAL_COMPILE_MAIN_DEBUG_FLAGS}${ColorReset}")
+message(STATUS "${BoldCyan}Release compile phase flags: ${THEPROJECT_ADDITIONAL_COMPILE_MAIN_RELEASE_FLAGS}${ColorReset}")
 
 
 # ******************** BUILDING OPTIONS ***************************
@@ -256,7 +282,12 @@ if(PARENTDIR STREQUAL "Release")
     message(STATUS "${BoldCyan}Building Release!${ColorReset}")
     #totally disable log.hpp
     set(CMAKE_BUILD_TYPE "Release")
+    #totally disable log.h
     add_definitions(-DQUICK_LOG=7)
+    #Add other definitions for the build
+    add_definitions(${THEPROJECT_MAIN_RELEASE_DEFINITIONS})
+    #Add compilation flags
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${THEPROJECT_ADDITIONAL_COMPILE_MAIN_RELEASE_FLAGS}")
 endif()
 
 if(PARENTDIR STREQUAL "Debug")
@@ -264,14 +295,23 @@ if(PARENTDIR STREQUAL "Debug")
     set(CMAKE_BUILD_TYPE "Debug")
     #-fno-stack-protector: to debug stack smashing (https://stackoverflow.com/a/1347464/1887602)
     add_definitions(-DQUICK_LOG=${THEPROJECT_DEBUG_LOG_LEVEL} -DDEBUG -fno-stack-protector )
+    #Add other definitions for the build
+    add_definitions(${THEPROJECT_MAIN_DEBUG_DEFINITIONS})
+    #Add compilation flags
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${THEPROJECT_ADDITIONAL_COMPILE_MAIN_DEBUG_FLAGS}")
 endif(PARENTDIR STREQUAL "Debug")
-#add common definitions
-#I perfer fmax-errors=1 instead of -Wfatal-errors becuase the second won't show the compiler notes of the error, but the first will
-add_definitions(-fmax-errors=1 -std=c++11 -Werror)
+
+#I prefer fmax-errors=1 instead of -Wfatal-errors becuase the second won't show the compiler notes of the error, but the first will
+add_definitions(-fmax-errors=1 -Werror)
+#Add c++ standard
+add_definitions(-std=${THEPROJECT_CPP_STANDARD})
+#Add custom definitions that are valid for all the artifacts in whatever build
+add_definitions(${THEPROJECT_ADDITIONAL_DEFINITIONS})
+#Add compile phase flags
+SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${THEPROJECT_ADDITIONAL_COMPILE_FLAGS}")
 
 # ****************** SUB DIRECTORIES *************************
 add_subdirectory(src/main/cpp)
 if(${THEPROJECT_TEST_ENABLE_TEST_COMPILATION} STREQUAL "true")
     add_subdirectory(src/test/cpp)
 endif(${THEPROJECT_TEST_ENABLE_TEST_COMPILATION} STREQUAL "true")
-
