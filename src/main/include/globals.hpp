@@ -87,6 +87,16 @@ public:
      */
     std::string outputMainJsonOriginalMapFilenamePyString;
     /**
+     * @brief python eval string representing the map of the image that will contauin the perturbated map screen
+     * 
+     */
+    std::string outputMainPerturbatedMapImagePystring;
+    /**
+     * @brief python eval string representing the name of the image to generate representing the solutions of the query
+     * 
+     */
+    std::string outputMainSolutionImagePyString;
+    /**
      * @brief true if you want to generate an image representing the perturbated map image
      * 
      * In it each pixel represent the edge cost. image is nxn when n is the number of locations in the map
