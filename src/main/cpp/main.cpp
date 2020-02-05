@@ -48,7 +48,7 @@ static boost::filesystem::path getOutputPerturbatedJsonPath(int perturbatedGraph
 static boost::filesystem::path getOutputMainSolutionImagePath(int perturbatedMapId, int queryId, const Globals& globals);
 static boost::filesystem::path getOutputMainPerturbatedImagePath(int perturbatedMapId, const Globals& globals);
 
-static std::string getSolutionString(const ISolutionPath<const State*, const State&>& solution);
+static std::string getSolutionString(const ISolutionPath<State, const State*, const State&>& solution);
 static std::string getEdgeDistribution(const IImmutableGraph<std::string, int, int>& countGraph);
 static std::string getVertexDistribution(const pathfinding::maps::GridMap& gridMap, const IImmutableGraph<std::string, xyLoc, cost_t>& baseMap, const IImmutableGraph<std::string, int, int>& countGraph);
 
@@ -479,15 +479,15 @@ static std::string getVertexDistribution(const pathfinding::maps::GridMap& gridM
 }
 
 
-static std::string getSolutionString(const ISolutionPath<const State*, const State&>& solution) {
+static std::string getSolutionString(const ISolutionPath<State, const State*, const State&>& solution) {
     const State* tmp = &solution.getGoal();
 
     std::stringstream ss;
 
     ss << "[";
     for (int i=0; i<solution.size(); ++i) {
-        nodeid_t idInvolved = solution.at(i)->getId();
-        xyLoc loc = solution.at(i)->getGraph().getVertex(idInvolved);
+        nodeid_t idInvolved = solution.at(i).getId();
+        xyLoc loc = solution.at(i).getGraph().getVertex(idInvolved);
         ss << "{" << loc.x << "|" << loc.y << "}";
         if ((i + 1) < solution.size()) {
             ss << "@";
